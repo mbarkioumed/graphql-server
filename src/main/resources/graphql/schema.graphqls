@@ -1,0 +1,91 @@
+type Query {
+    users(page: Int, limit: Int): [User]
+    user(id: ID!): User
+
+    posts(page: Int, limit: Int): [Post]
+    post(id: ID!): Post
+    postsByUser(userId: ID!, page: Int, limit: Int): [Post]
+    postsByTag(tag: String!, page: Int, limit: Int): [Post]
+
+    comments(page: Int, limit: Int): [Comment]
+    commentsByPost(postId: ID!, page: Int, limit: Int): [Comment]
+    commentsByUser(userId: ID!, page: Int, limit: Int): [Comment]
+
+    # New queries for locations
+    locations(page: Int, limit: Int): [Location]
+    location(id: ID!): Location
+
+    # New queries for tags
+    tags(page: Int, limit: Int): [Tag]
+    tag(id: ID!): Tag
+}
+
+type Mutation {
+    createUser(firstName: String!, lastName: String!, email: String!): User
+    updateUser(id: ID!, title: String, firstName: String, lastName: String): User
+    deleteUser(id: ID!): ID
+
+    createPost(text: String!, ownerId: ID!): Post
+    updatePost(id: ID!, text: String, image: String): Post
+    deletePost(id: ID!): ID
+
+    createComment(message: String!, ownerId: ID!, postId: ID!): Comment
+    deleteComment(id: ID!): ID
+
+    # New mutations for locations
+    createLocation(street: String, city: String, state: String, country: String, timezone: String): Location
+    updateLocation(id: ID!, street: String, city: String, state: String, country: String, timezone: String): Location
+    deleteLocation(id: ID!): ID
+
+    # New mutations for tags
+    createTag(name: String!): Tag
+    updateTag(id: ID!, name: String!): Tag
+    deleteTag(id: ID!): ID
+}
+
+type User {
+    id: ID!
+    title: String
+    firstName: String!
+    lastName: String!
+    gender: String
+    email: String!
+    dateOfBirth: String
+    registerDate: String
+    phone: String
+    picture: String
+    location: Location
+}
+
+type Location {
+    id: ID!
+    street: String
+    city: String
+    state: String
+    country: String
+    timezone: String
+}
+
+# Added Tag type
+type Tag {
+    id: ID!
+    name: String!
+}
+
+type Post {
+    id: ID!
+    text: String!
+    image: String
+    likes: Int
+    tags: [String]
+    publishDate: String
+    owner: User
+}
+
+type Comment {
+    id: ID!
+    message: String!
+    owner: User
+    post: Post
+    publishDate: String
+}
