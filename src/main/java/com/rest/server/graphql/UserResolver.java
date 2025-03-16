@@ -62,27 +62,32 @@ public class UserResolver {
 
     // Mutation to create a user
     @MutationMapping
-    public User createUser(@Argument String firstName, @Argument String lastName, @Argument String email) {
+    public User createUser(@Argument String firstName, @Argument String lastName,
+            @Argument String email, @Argument String password) {
 
         User newUser = new User();
         newUser.setUserFirstName(firstName);
         newUser.setUserLastName(lastName);
         newUser.setUserEmail(email);
-        newUser.setUserPassword("temporary"); // You might want to handle this differently
+        newUser.setUserPassword(password); // Use the provided password
 
         return userService.createUser(newUser);
     }
 
     // Mutation to update a user
     @MutationMapping
-    public User updateUser(@Argument String id, @Argument String title, @Argument String firstName, @Argument String lastName) {
+    public User updateUser(@Argument String id, @Argument String title, @Argument String firstName,
+            @Argument String lastName) {
 
         Optional<User> userOptional = userService.singleUser(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (title != null) user.setUserTitle(title);
-            if (firstName != null) user.setUserFirstName(firstName);
-            if (lastName != null) user.setUserLastName(lastName);
+            if (title != null)
+                user.setUserTitle(title);
+            if (firstName != null)
+                user.setUserFirstName(firstName);
+            if (lastName != null)
+                user.setUserLastName(lastName);
 
             return userService.updateUser(id, user);
         }
